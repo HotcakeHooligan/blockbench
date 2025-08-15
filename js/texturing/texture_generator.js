@@ -1,3 +1,12 @@
+function getNextTextureName() {
+    let i = 1;
+    let name;
+    do {
+        name = `texture ${i}`;
+        i++;
+    } while (Texture.all.some(tex => tex.name === name));
+    return name;
+}
 const TextureGenerator = {
 	background_color: new ColorPicker({
 		id: 'background_color',
@@ -36,7 +45,7 @@ const TextureGenerator = {
 			title: tl('action.create_texture'),
 			width: 610,
 			form: {
-				name: 			{label: 'generic.name', value: 'texture'},
+				name: 			{label: 'generic.name', value: getNextTextureName()},				
 				folder: 		{label: 'dialog.create_texture.folder', condition: {features: ['texture_folder']}},
 				type:			{label: 'dialog.create_texture.type', type: 'inline_select', options: type_options, condition: Object.keys(type_options).length > 1},
 				section2:    	"_",
@@ -115,7 +124,7 @@ const TextureGenerator = {
 		var texture = new Texture({
 			mode: 'bitmap',
 			keep_size: true,
-			name: options.name ? options.name : 'texture',
+			name: options.name ? options.name : getNextTextureName(),
 			folder: options.folder ? options.folder : 'block',
 			use_as_default: Format.single_texture_default && Outliner.selected.length == Outliner.elements.length
 		})
